@@ -1,0 +1,4 @@
+[runner]
+
+# Default: true
+fastReruns = false
