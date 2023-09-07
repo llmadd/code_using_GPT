@@ -29,6 +29,7 @@ def qa_with_code(question:str,code_str)->str:
 
 st.title(":blue[Analyzing code using GPT 🤖]")
 
+
 if 'code' not in st.session_state:
     st.session_state.code = ""
 if 'doc_result' not in st.session_state:
