@@ -17,11 +17,11 @@ from langchain.text_splitter import (
 import streamlit as st
 from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
-
+import app
 
 load_dotenv()
 
-os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+os.environ["OPENAI_API_KEY"] = app.openai_key
 
 
 CHUNK_SIZE = 3000
