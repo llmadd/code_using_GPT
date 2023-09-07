@@ -2,6 +2,8 @@ import streamlit as st
 from work import work
 from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
+openai_key = st.secrets["OPENAI_API_KEY"]
+
 
 def doc_code(code_str)->str:
     code_split_ = work.code_splite(code_str)
