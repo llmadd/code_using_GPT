@@ -14,13 +14,14 @@ from langchain.text_splitter import (
     RecursiveCharacterTextSplitter,
     Language,
 )
+import streamlit as st
 from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
 
 
 load_dotenv()
 
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 
 
 CHUNK_SIZE = 3000
