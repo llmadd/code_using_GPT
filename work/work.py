@@ -16,8 +16,7 @@ from langchain.text_splitter import (
 )
 from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
-import streamlit as st
-import app
+
 CHUNK_SIZE = 3000
 def load_env(openai_api_key:str,model_name:str,temperature:float)->None:
     os.environ["OPENAI_API_KEY"] = openai_api_key
