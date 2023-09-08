@@ -1,6 +1,3 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import os
 from dotenv import load_dotenv
 from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
@@ -19,7 +16,6 @@ from langchain.text_splitter import (
 )
 from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
-
 CHUNK_SIZE = 3000
 def load_env(openai_api_key:str,model_name:str,temperature:float)->None:
     os.environ["OPENAI_API_KEY"] = openai_api_key
@@ -121,8 +117,11 @@ def doc_futures_run(code_list:List[str],chat)->List[str]:
 
         futures = [executor.submit(code_doc_chain, _i,chat) for _i in code_list]
         
-        for future in concurrent.futures.as_completed(futures):
-            result = future.result()
+        # for future in concurrent.futures.as_completed(futures):
+        #     result = future.result()
+        #     results.append(result)
+        # 更新结果不按顺序返回 
+        for result in executor.map(lambda future: future.result(), futures):
             results.append(result)
     return results
 
@@ -133,8 +132,11 @@ def comment_future_run(code_list:List[str],chat)->List[str]:
 
         futures = [executor.submit(code_with_comment_chain, _i,chat) for _i in code_list]
         
-        for future in concurrent.futures.as_completed(futures):
-            result = future.result()
+        # for future in concurrent.futures.as_completed(futures):
+        #     result = future.result()
+        #     results.append(result)
+        # 更新结果不按顺序返回 
+        for result in executor.map(lambda future: future.result(), futures):
             results.append(result)
     return results
 
