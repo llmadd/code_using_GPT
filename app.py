@@ -43,16 +43,13 @@ with st.sidebar:
     model_name = st.selectbox(
     '选择Openai模型',
     ('gpt-3.5-turbo', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0613','gpt-3.5-turbo-16k-0613','gpt-4','gpt-4-0613','gpt-4-32k','gpt-4-32k-0613'))
-    temperature = st.slider('设置模型温度值', 0.0, 2.0, 0.5)
-
-def load_env(openai_api_key:str,model_name:str,temperature:float)->None:
-    st.session_state.chat = work.load_env(openai_api_key=openai_api_key,model_name=model_name,temperature=temperature)
+    temperature = st.slider('设置模型温度值', 0.0, 2.0, 0.5)   
 
 if not openai_api_key:
     st.error("请输入OpenAI API Key")
     st.stop()
 else:
-    load_env(openai_api_key=openai_api_key,model_name=model_name,temperature=temperature)
+    st.session_state.chat = work.load_env(openai_api_key=openai_api_key,model_name=model_name,temperature=temperature)
 
 
 
