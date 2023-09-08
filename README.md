@@ -6,7 +6,26 @@
 
 本项目主要通过使用ChatGPT,来为代码生成注释、生成README.md文档、以及根据代码文件与大模型进行问答，以便于更好的了解代码！
 
-### 2. 安装说明
+### Streamlit 一键部署
+
+
+* fork本仓库后点击 `Streamlit 部署` 选择NEW APP
+
+<p>
+<a href="https://share.streamlit.io/">
+<button style="background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Streamlit 部署</button>
+</a>
+</p>
+
+
+![程序界面](./image/streamlit.png)
+* Repository 选择fork的仓库
+* Branch 一般默认为main
+* Main file path为app.py
+* App URL (Optional) 自定义域名
+* 点击Deploy!即可
+
+### 本地安装说明
 1. 安装Git：
 
     如果您尚未安装Git，请首先安装它。您可以从Git官网下载适合您操作系统的版本：https://git-scm.com/downloads
@@ -15,7 +34,7 @@
 
     打开命令行终端，并导航到您希望将项目克隆到的目录。然后运行以下命令，将GitHub存储库克隆到您的本地计算机：
 ```bash
-git clone https://github.com/yourusername/your-repo.git
+git clone https://github.com/llmadd/code_using_GPT.git
 ```
  请将上述URL替换为您要克隆的GitHub存储库的实际URL。
 
@@ -23,7 +42,7 @@ git clone https://github.com/yourusername/your-repo.git
 
     使用cd命令进入克隆的存储库目录：
 ```bash
-cd your-repo
+cd code_using_GPT
 ```
 
 4. 创建虚拟环境（可选但建议）：
@@ -45,8 +64,8 @@ pip install -r requirements.txt
 
 这将安装项目所需的所有Python包。
 
-6. 修改.env,运行Streamlit应用程序：
-    修改文件.env中的OPENAI_API_KEY为自己的token。并在命令行中运行以下命令来启动Streamlit应用程序：
+6. 运行Streamlit应用程序：
+    在命令行中运行以下命令来启动Streamlit应用程序：
 
 ```bash
 streamlit run app.py
@@ -81,9 +100,11 @@ streamlit run app.py
 ### 5. 待完善功能
 - [ ] 多语言支持(C、JAVA等)
 
-- [ ] 用户一键部署，更方便的openaikey修改
+- [x] 用户一键部署，更方便的openaikey修改
 
 - [ ] 用户可自主选择模型
+
+- [ ] 一键格式化代码
 
 - [ ] 更多需求可以联系我...
 
