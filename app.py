@@ -1,5 +1,5 @@
 import streamlit as st
-from work import work
+import work.work as work
 from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
 
