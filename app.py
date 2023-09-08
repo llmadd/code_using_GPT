@@ -2,8 +2,6 @@ import streamlit as st
 from work import work
 from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
-openai_key = st.secrets["OPENAI_API_KEY"]
-
 
 def doc_code(code_str,chat)->str:
     code_split_ = work.code_splite(code_str)
@@ -47,7 +45,6 @@ with st.sidebar:
     ('gpt-3.5-turbo', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0613','gpt-3.5-turbo-16k-0613','gpt-4','gpt-4-0613','gpt-4-32k','gpt-4-32k-0613'))
     temperature = st.slider('设置模型温度值', 0.0, 2.0, 0.5)
 
-<<<<<<< HEAD
 def load_env(openai_api_key:str,model_name:str,temperature:float)->None:
     st.session_state.chat = work.load_env(openai_api_key=openai_api_key,model_name=model_name,temperature=temperature)
 
@@ -61,9 +58,6 @@ else:
 
 
 uploaded_file = st.file_uploader(label=":blue[上传代码文件]",type=["py"], help=":blue[仅支持py文件]",key = "up_file")
-=======
-uploaded_file = st.file_uploader(label=":blue[上传代码文件]",type=["py"], help=":blue[仅支持py文件]",key="up_file")
->>>>>>> b8d35e03dc43b2c479541789aa26d2763813628c
 
 if uploaded_file is not None:
     with st.sidebar:
