@@ -40,7 +40,7 @@ if 'comment_result' not in st.session_state:
     st.session_state.comment_result = ""
 
 
-uploaded_file = st.file_uploader(label=":blue[上传代码文件]",type=["py"], help=":blue[仅支持py文件]")
+uploaded_file = st.file_uploader(label=":blue[上传代码文件]",type=["py"], help=":blue[仅支持py文件]",key="up_file")
 
 if uploaded_file is not None:
     with st.sidebar:
