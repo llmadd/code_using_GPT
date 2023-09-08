@@ -14,10 +14,21 @@ from langchain.text_splitter import (
     RecursiveCharacterTextSplitter,
     Language,
 )
+import streamlit as st
 from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
+<<<<<<< HEAD
 import streamlit as st
 import app
+=======
+import app
+
+load_dotenv()
+
+os.environ["OPENAI_API_KEY"] = app.openai_key
+
+
+>>>>>>> b8d35e03dc43b2c479541789aa26d2763813628c
 CHUNK_SIZE = 3000
 def load_env(openai_api_key:str,model_name:str,temperature:float)->None:
     os.environ["OPENAI_API_KEY"] = openai_api_key
@@ -138,5 +149,10 @@ def comment_future_run(code_list:List[str],chat)->List[str]:
 
 
 
+<<<<<<< HEAD
 # print(st.secrets["openai_api_key"])
     
+=======
+print(os.environ["OPENAI_API_KEY"])
+    
+>>>>>>> b8d35e03dc43b2c479541789aa26d2763813628c
