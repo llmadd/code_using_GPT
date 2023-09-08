@@ -16,16 +16,13 @@ from langchain.text_splitter import (
 )
 from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
-
-
-load_dotenv()
-
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-
-
+import streamlit as st
+import app
 CHUNK_SIZE = 3000
-
-chat = ChatOpenAI(model="gpt-3.5-turbo-16k",temperature=0.5,streaming=True)
+def load_env(openai_api_key:str,model_name:str,temperature:float)->None:
+    os.environ["OPENAI_API_KEY"] = openai_api_key
+    chat = ChatOpenAI(model = model_name,temperature = temperature,streaming=True)
+    return chat
 
 code_with_comment_chain_systemtemplate = """
 你强大的人工智能ChatGPT。
@@ -60,7 +57,7 @@ def get_code_embd_save(code_split:List[str])->Chroma:
     return db
 
 
-def qa_with_code_chain(db:Chroma,question:str)->str:
+def qa_with_code_chain(db:Chroma,question:str,chat)->str:
     retrievers_re = ""
     retrievers = db.as_retriever(search_kwargs={'k': 4,})
     doc_re = retrievers.get_relevant_documents(question)
@@ -96,7 +93,7 @@ def code_splite(code:str)->List[str]:
 
     return splite_code
 
-def code_with_comment_chain(code:str)->str:
+def code_with_comment_chain(code:str,chat)->str:
     chat_prompt_template = ChatPromptTemplate.from_messages([
         ("system", code_with_comment_chain_systemtemplate),
         ("human","{text}")
@@ -105,7 +102,7 @@ def code_with_comment_chain(code:str)->str:
     result = chain.run(code)
     return result
 
-def code_doc_chain(code: str) -> str:
+def code_doc_chain(code: str,chat) -> str:
     chat_prompt_template = ChatPromptTemplate.from_messages([
         ("system", doc_code_chain_systemtemplate),
         ("human", "{text}")
@@ -114,25 +111,25 @@ def code_doc_chain(code: str) -> str:
     result = chain.run(code)
     return  result
 
-def doc_futures_run(code_list:List[str])->List[str]:
+def doc_futures_run(code_list:List[str],chat)->List[str]:
 
     results = []
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
 
-        futures = [executor.submit(code_doc_chain, _i) for _i in code_list]
+        futures = [executor.submit(code_doc_chain, _i,chat) for _i in code_list]
         
         for future in concurrent.futures.as_completed(futures):
             result = future.result()
             results.append(result)
     return results
 
-def comment_future_run(code_list:List[str])->List[str]:
+def comment_future_run(code_list:List[str],chat)->List[str]:
     results = []
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
 
-        futures = [executor.submit(code_with_comment_chain, _i) for _i in code_list]
+        futures = [executor.submit(code_with_comment_chain, _i,chat) for _i in code_list]
         
         for future in concurrent.futures.as_completed(futures):
             result = future.result()
@@ -141,5 +138,5 @@ def comment_future_run(code_list:List[str])->List[str]:
 
 
 
-print(os.environ["OPENAI_API_KEY"])
+# print(st.secrets["openai_api_key"])
     
