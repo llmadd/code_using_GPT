@@ -16,7 +16,9 @@ from langchain.text_splitter import (
 )
 from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
+
 CHUNK_SIZE = 3000
+
 def load_env(openai_api_key:str,model_name:str,temperature:float)->None:
     os.environ["OPENAI_API_KEY"] = openai_api_key
     chat = ChatOpenAI(model = model_name,temperature = temperature,streaming=True)
@@ -48,6 +50,90 @@ qa_with_code_chain_systemtemplate = """
 要尽可能详细的回答用户问题
 """
 
+def get_file_type(file_name):
+    extension = "."+file_name.split('.')[-1]
+    if extension in ['.cpp', '.cc', '.cxx', '.hpp', '.h', '.hxx']:
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.CPP,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )
+        return splitter
+    elif extension == '.go':
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.GO,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension == '.java':
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.JAVA,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension == '.js':
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.JS,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension == '.php':
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.PHP,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension == '.proto':
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.PROTO,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension == '.py':
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.PYTHON,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension in '.rst':
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.RST,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension == '.rb':
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.RUBY,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension == '.rs':
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.RUST,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension == '.scala':
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.SCALA,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension == '.swift':
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.SWIFT,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension in ['.md', '.markdown']:
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.MARKDOWN,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension == '.tex':
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.LATEX,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension in ['.html', '.htm']:
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.HTML,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    elif extension == '.sol':
+        splitter = RecursiveCharacterTextSplitter.from_language(
+        language=Language.SOL,chunk_size=CHUNK_SIZE, chunk_overlap=0
+    )   
+        return splitter
+    else:
+        return 'Unknown'
 
 def get_code_embd_save(code_split:List[str])->Chroma:
     embeddings = OpenAIEmbeddings()
@@ -83,11 +169,8 @@ def qa_with_code_chain(db:Chroma,question:str,chat)->str:
     answer = chain.run(question)
     return answer
 
-def code_splite(code:str)->List[str]:
-    python_splitter = RecursiveCharacterTextSplitter.from_language(
-        language=Language.PYTHON,chunk_size=CHUNK_SIZE, chunk_overlap=0
-    )
-    splite_code = python_splitter.split_text(text=code)
+def code_splite(code:str,splitter:RecursiveCharacterTextSplitter)->List[str]:
+    splite_code = splitter.split_text(text=code)
 
     return splite_code
 

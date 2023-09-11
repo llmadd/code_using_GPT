@@ -4,7 +4,8 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
 
 def doc_code(code_str,chat)->str:
-    code_split_ = work.code_splite(code_str)
+    spliter = work.get_file_type(st.session_state.file_type)
+    code_split_ = work.code_splite(code_str,spliter)
     result = ""
     results = work.doc_futures_run(code_split_,chat)
     for i in results:
@@ -12,7 +13,8 @@ def doc_code(code_str,chat)->str:
     return result
 
 def code_with_comment(code_str,chat)->str:
-    code_split_ = work.code_splite(code_str)
+    spliter = work.get_file_type(st.session_state.file_type)
+    code_split_ = work.code_splite(code_str,spliter)
     result = ""
     results = work.comment_future_run(code_split_,chat)
     for i in results:
@@ -20,7 +22,8 @@ def code_with_comment(code_str,chat)->str:
     return result
 
 def qa_with_code(question:str,code_str,chat)->str:
-    code_split_ = work.code_splite(code_str)
+    spliter = work.get_file_type(st.session_state.file_type)
+    code_split_ = work.code_splite(code_str,spliter)
     db = work.get_code_embd_save(code_split_)
     result = work.qa_with_code_chain(db = db,question=question,chat = chat)
     return result
@@ -36,6 +39,8 @@ if 'doc_result' not in st.session_state:
     st.session_state.doc_result = ""
 if 'comment_result' not in st.session_state:
     st.session_state.comment_result = ""
+if 'file_type' not in st.session_state:
+    st.session_state.file_type = ""
 
 with st.sidebar:
     st.title(":blue[ChatGPT 🤖]")
@@ -54,12 +59,17 @@ else:
 
 
 
-uploaded_file = st.file_uploader(label=":blue[上传代码文件]",type=["py"], help=":blue[仅支持py文件]",key = "up_file")
+uploaded_file = st.file_uploader(label=":blue[上传代码文件]",type=[
+    'cpp', 'cc', 'cxx', 'hpp', 'h', 'hxx', 
+    'go', 'java', 'js', 'php', 'proto', 'py', 
+    'rst', 'rb', 'rs', 'scala', 'swift', 'md', 
+    'markdown', 'tex', 'html', 'sol'], help=":blue[仅支持py文件]",key = "up_file")
 
 if uploaded_file is not None:
     with st.sidebar:
         st.title(f"{uploaded_file.name}文件源码:")
         code_str = uploaded_file.getvalue().decode("utf-8")
+        st.session_state.file_type = uploaded_file.name
         st.session_state.code = code_str
         st.code(code_str,language="python")
     col1, col2 = st.columns(spec= [0.5,0.5], gap = "large")
