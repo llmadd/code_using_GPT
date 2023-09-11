@@ -63,7 +63,7 @@ uploaded_file = st.file_uploader(label=":blue[上传代码文件]",type=[
     'cpp', 'cc', 'cxx', 'hpp', 'h', 'hxx', 
     'go', 'java', 'js', 'php', 'proto', 'py', 
     'rst', 'rb', 'rs', 'scala', 'swift', 'md', 
-    'markdown', 'tex', 'html', 'sol'], help=":blue[仅支持py文件]",key = "up_file")
+    'markdown', 'tex', 'html', 'sol'], help=":blue[仅支持所有主流代码文件]",key = "up_file")
 
 if uploaded_file is not None:
     with st.sidebar:
