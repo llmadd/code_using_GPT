@@ -111,7 +111,8 @@ for msg in st.session_state.messages:
 if st.session_state.code == "":
     st.error("请上传代码文件")
     st.stop()
-if prompt = st.chat_input(placeholder="咨询与代码文件有关问题",max_chars = 4000,key="prompt"):
+prompt = st.chat_input(placeholder="咨询与代码文件有关问题",max_chars = 4000,key="prompt")
+if prompt:
 
     st.session_state.messages.append({"role": "human", "avatar":"🧑", "content": prompt})
 
